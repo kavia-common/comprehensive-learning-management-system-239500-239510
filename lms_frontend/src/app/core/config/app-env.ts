@@ -9,9 +9,13 @@ export type AppEnv = {
  * or by injecting a global `window.__APP_ENV__`.
  */
 const defaultEnv: AppEnv = {
-  apiBaseUrl: '/api',
-  notificationsSseUrl: '/api/notifications/stream',
-  notificationsWsUrl: '/ws/notifications',
+  // IMPORTANT: In Kavia preview, frontend and backend are different origins.
+  // If apiBaseUrl were just "/api", the browser would call the frontend origin.
+  // Use window.__APP_ENV__ to override in deployments that provide a same-origin reverse proxy.
+  apiBaseUrl: 'http://localhost:3001/api',
+  notificationsSseUrl: 'http://localhost:3001/api/notifications/stream',
+  // Backend STOMP endpoint is /ws (see WebSocketConfig). The app may choose SSE by default.
+  notificationsWsUrl: 'ws://localhost:3001/ws',
 };
 
 declare global {
